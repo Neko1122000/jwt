@@ -1,87 +1,80 @@
 let User = require('../models/User.model');
 
-exports.update = function (req, res) {
-    User.findByIdAndUpdate(req.params.id, {$set: req.body}, (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(404).send('Listing Error');
-        } else res.send('Successfully Update');
-    });
-    console.log('User updated');
-};
-
-exports.detail = function(req, res) {
-    User.findById(req.userId, {password: 0}).then(result => {
-        if (!result) return res.status(404).send('No User found');
-        res.status(200).send(result);
-    }).catch(err => {
+exports.update = async (req, res) => {
+    try {
+        const result = await User.findByIdAndUpdate(req.params.id, {$set: req.body});
+        res.send(result);
+    } catch(err){
         console.log(err);
-        res.status(500).send('Error');
-    })
+        res.status(404).send('Listing Error');
+    }
 };
 
-exports.logout = function (req, res) {
-    res.clearCookie('token');
+exports.detail = async (req, res) => {
+    try {
+        const result= await User.findById(req.userId, {password: 0});
+        res.status(200).send(result);
+    } catch (e) {
+        res.status(404).send('No User found');
+        console.log(e);
+    }
+};
+
+exports.logOut = async (req, res) => {
+    await res.clearCookie('token');
     res.redirect('/home');
 };
 
-exports.buy = function (req, res) {
-    User.findById(req.userId)
-        .populate('buy')
-        .exec((err, user) => {
-            if (err) {
-                console.log(err);
-                return res.status(500).send('Buying false');
-            }
-            user.buy.markModified('nested');
-            user.buy.nested.push({product: req.body.id, number: req.body.number});
-            user.buy.save();
-            res.json(user.buy.nested);
-        });
+exports.buy = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId).populate('buy').exec();
+        user.buy.markModified('nested');
+        user.buy.nested.push({product: req.params.id, number: req.body.number});
+        user.buy.save();
+        res.json(user.buy.nested);
+    }catch (e) {
+        console.log(e);
+        return res.status(500).send('Buying false');
+    }
+
 };
 
-exports.delete_product = function (req, res) {
-    User.findById(req.userId)
-        .populate('buy')
-        .exec((err, user) => {
-            if (err) {
-                console.log(err);
-                return res.status(500).send('Deleting false');
-            }
-            let pos = user.buy.nested.findIndex(element => element.product == req.body.id);
-            if (pos != -1) {
-                user.buy.nested.splice(pos, 1);
-                user.buy.save();
-                res.json(user.buy.nested);
-            } else res.status(500).send('Product not found');
-        });
-}
+exports.delete = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId).populate('buy').exec();
+        const pos = await user.buy.nested.findIndex(element => element.product == req.body.id);
+        if (pos != -1) {
+            user.buy.nested.splice(pos, 1);
+            user.buy.save();
+            res.json(user.buy.nested);
+        } else res.status(500).send('Product not found');
+    } catch (e) {
+        console.log(err);
+        return res.status(500).send('Deleting false');
+    }
+};
 
-exports.update_product = function (req, res) {
-    User.findById(req.userId)
-        .populate('buy')
-        .exec((err, user) => {
-            if (err) {
-                console.log(err);
-                return res.status(500).send('Updating false');
-            }
-            let pos = user.buy.nested.findIndex(element => element.product == req.body.id);
-            if (pos != -1) {
-                user.buy.nested[pos].number = req.body.number;
-                user.buy.save();
-                res.json(user.buy.nested);
-            } else res.status(500).send('Product not found');
-        });
-}
+exports.update = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId).populate('buy').exec();
+        const pos = await user.buy.nested.findIndex(element => element.product == req.body.id);
+        if (pos != -1) {
+            user.buy.nested[pos].number = req.body.number;
+            user.buy.save();
+            res.json(user.buy.nested);
+        } else res.status(500).send('Product not found');
+    } catch (e) {
+        console.log(e);
+        return res.status(500).send('Updating false');
+    }
+};
 
-exports.product_detail = function (req, res) {
-    User.findById(req.userId, {password: 0})
-        .populate('buy')
-        .exec((err, user) => {
-            if (err) {
-                console.log(err);
-                return res.status(500).send('Listing product false');
-            }
-            res.json(user);
-        });
-}
+exports.getSingleProduct = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId).populate('buy').exec();
+        res.json(user);
+    } catch (e) {
+        console.log(e);
+        return res.status(500).send('Listing product false');
+    }
+};

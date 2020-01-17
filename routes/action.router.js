@@ -7,11 +7,12 @@ const admin = require('../routes/admin.router')
 
 router.use('/', auth.authencate);
 router.get('/profile', userController.detail);
-router.get('/logout', userController.logout);
-router.post('/product/buy', userController.buy);
-router.delete('/product/remove', userController.delete_product);
-router.put('/product/update', userController.update_product);
-router.get('/product/detail', userController.product_detail)
+router.get('/logout', userController.logOut);
+
+router.post('/product/:id', userController.buy);
+router.delete('/product/:id', userController.delete);
+router.put('/product/:id', userController.update);
+router.get('/product/:id', userController.getSingleProduct);
 
 router.use('/admin', admin);
 

@@ -9,8 +9,10 @@ router.use('/', auth.verify);
 router.get('/profile', adminController.detail);
 router.delete('/delete/:id', adminController.delete_user);
 
-router.post('/product/newProduct', productManager.product_create);
-router.put('/product/update', productManager.product_update);
-router.delete('/product/delete/:id', productManager.product_delete);
+router.get('/products', productManager.getProducts);
+router.get('/products/:id', productManager.getSingleProduct);
+router.post('/products', productManager.create);
+router.put('/products/:id', productManager.update);
+router.delete('/products/:id', productManager.delete);
 
 module.exports = router;

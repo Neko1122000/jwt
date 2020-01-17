@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const buyList = require('../models/buyList.model');
 
-let User = new mongoose.Schema({
+const User = new mongoose.Schema({
     name: {type: String, required: true, trim: true},
     password: {type: String, required: true},
     email: {type: String, required: true, unique: true, trim: true},

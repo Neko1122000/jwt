@@ -4,11 +4,11 @@ const userListController = require('../controllers/userListController');
 const productManager = require('../controllers/product.controller');
 
 router.post('/signup', userListController.create);
-router.post('/signin', userListController.signin);
+router.post('/signin', userListController.signIn);
 router.get('/list', userListController.list);
 
-router.get('/product/list', productManager.list);
-router.get('/product/:id', productManager.product_detail);
+router.get('/products/', productManager.getProducts);
+router.get('/products/:id', productManager.getSingleProduct);
 
 const action = require('../routes/action.router');
 router.use('/user', action);
