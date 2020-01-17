@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="78c41915-5e02-457c-ad70-8dda9d435d55" name="Default Changelist" comment="" />
+    <list default="true" id="78c41915-5e02-457c-ad70-8dda9d435d55" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/product.controller.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/buyList.model.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/product.model.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/admin.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/admin.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/user.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/user.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/userListController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/userListController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/Authentication.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/Authentication.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/roleVerify.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/roleVerify.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/User.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/User.model.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/seed.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/seed.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/action.router.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/action.router.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/admin.router.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/admin.router.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/user.router.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/user.router.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,7 +30,11 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1WQIYcKTVnhkHJoJGJpNzDg5Vht" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -22,9 +42,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="12.14.0" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../testing/models/Users.js" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../app-test/controllers/users.controller.js" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -73,7 +94,8 @@
       <updated>1579075440453</updated>
       <workItem from="1579075442103" duration="316000" />
       <workItem from="1579075886850" duration="8208000" />
-      <workItem from="1579138870090" duration="20280000" />
+      <workItem from="1579138870090" duration="27438000" />
+      <workItem from="1579224911918" duration="3349000" />
     </task>
     <servers />
   </component>
@@ -89,26 +111,26 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="421" y="46" key="#com.intellij.ide.macro.MacrosDialog/0.0.1280.680@0.0.1280.680" timestamp="1579080913171" />
-    <state x="421" y="97" key="FileChooserDialogImpl" timestamp="1579081575124">
+    <state x="421" y="97" key="FileChooserDialogImpl" timestamp="1579227144185">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="421" y="97" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1579081575124" />
-    <state width="1259" height="163" key="GridCell.Tab.0.bottom" timestamp="1579161642892">
+    <state x="421" y="97" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1579227144185" />
+    <state width="1259" height="163" key="GridCell.Tab.0.bottom" timestamp="1579228409884">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1579161642892" />
-    <state width="1259" height="163" key="GridCell.Tab.0.center" timestamp="1579161642891">
+    <state width="1259" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1579228409884" />
+    <state width="1259" height="163" key="GridCell.Tab.0.center" timestamp="1579228409884">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1579161642891" />
-    <state width="1259" height="163" key="GridCell.Tab.0.left" timestamp="1579161642891">
+    <state width="1259" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1579228409884" />
+    <state width="1259" height="163" key="GridCell.Tab.0.left" timestamp="1579228409884">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1579161642891" />
-    <state width="1259" height="163" key="GridCell.Tab.0.right" timestamp="1579161642892">
+    <state width="1259" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1579228409884" />
+    <state width="1259" height="163" key="GridCell.Tab.0.right" timestamp="1579228409884">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1579161642892" />
+    <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1579228409884" />
     <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1579160851343">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
 const config = require('../config/config');
 
 exports.authencate = function (req, res, next) {
@@ -13,4 +12,4 @@ exports.authencate = function (req, res, next) {
         req.userId = decoded.id;
         next();
     });
-}
+};

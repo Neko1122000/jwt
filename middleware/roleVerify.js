@@ -9,4 +9,4 @@ exports.verify = function(req, res, next){
         console.log(err);
         res.status(500).send('Admin verify err');
     })
-}
+};

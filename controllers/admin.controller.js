@@ -12,7 +12,7 @@ exports.detail = async function(req, res) {
     //res.send('not ok');
 }
 
-exports.delete = function(req, res) {
+exports.delete_user = function(req, res) {
     User.findByIdAndDelete(req.params.id)
         .then(() => {
             res.send('Successfully delete');
