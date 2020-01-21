@@ -23,7 +23,7 @@ exports.userUpdate = async (req, res) => {
 };
 
 exports.logOut = async (req, res) => {
-    await res.clearCookie('token');
+    await delete req.headers['Authorization'];
     res.redirect('/home');
 };
 
@@ -32,7 +32,7 @@ exports.buy = async (req, res) => {
         const user = await User.findById(req.userId).populate('buy').exec();
         const product = await Product.findById(req.params.id).exec();
         if (!product) return res.status(400).send('Product not for sell');
-        user.buy.markModified('nested', 'money');
+        //user.buy.markModified('nested', 'money');
         user.buy.nested.push({product: req.params.id, number: req.body.number});
         user.buy.save();
         //user.save();
@@ -47,7 +47,7 @@ exports.buy = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const user = await User.findById(req.userId).populate('buy').exec();
-        const pos = await user.buy.nested.findIndex(element => element.product == req.body.id);
+        const pos = await user.buy.nested.findIndex(element => element.product == req.params.id);
         if (pos != -1) {
             user.buy.nested.splice(pos, 1);
             user.buy.save();
@@ -62,7 +62,7 @@ exports.delete = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         const user = await User.findById(req.userId).populate('buy').exec();
-        const pos = await user.buy.nested.findIndex(element => element.product == req.body.id);
+        const pos = await user.buy.nested.findIndex(element => element.product == req.params.id);
         if (pos != -1) {
             user.buy.nested[pos].number = req.body.number;
             user.buy.save();
@@ -76,13 +76,28 @@ exports.update = async (req, res) => {
 
 exports.getSingleProduct = async (req, res) => {
     try {
-        const user = await User.findById(req.userId).populate('buy').exec();
-        res.json(user);
+        const user = await User.findById(req.userId).populate({path: 'buy', populate: {path: 'nested.product'}}).exec();
+        const pos = await user.buy.nested.findIndex(element => element.product._id == req.params.id);
+        if (pos != -1) {
+            res.json(user.buy.nested[pos]);
+        } else res.status(500).send('Product not found');
     } catch (e) {
         console.log(e);
         return res.status(500).send('Listing product false');
     }
 };
+
+exports.getProducts = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId)
+                                .populate({path: 'buy', populate: {path: 'nested.product'}})
+                                .exec();
+        res.json(user.buy.nested);
+    } catch (e) {
+        console.log(e);
+        return res.status(500).send('Listing product false');
+    }
+}
 
 exports.purchase = async (req, res) => {
     try{
