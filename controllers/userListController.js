@@ -17,20 +17,21 @@ exports.list = async (req, res) => {
 exports.create = async (req, res) => {
     try {
         const hashPassword = bcrypt.hashSync(req.body.password, 10);
-        const buy =  await buyList.create();
+        const buy =  await buyList.create({});
 
         let newUser = new User({
             name: req.body.name,
             email: req.body.email,
             password: hashPassword,
+            money: req.body.money,
             buy: buy._id,
         });
-        await User.save(newUser);
+        await newUser.save();
         const  token = await jwt.sign({id: newUser._id, role: newUser.role}, config.secret, {expiresIn: 84600});
         res.cookie('token', token, {expiresIn: 86400});
         res.redirect('/user/profile');
     }catch (e) {
-        console.log(err);
+        console.log(e);
     }
 };
 
@@ -41,7 +42,7 @@ exports.signIn = async (req, res) => {
 
         const verify = await bcrypt.compareSync(req.body.password, result.password);
         if (!verify) return res.status(401).send('Email/password not correct');
-        const token = await jwt.sign({id: result._id, role: result.role}, config.secret, {expiresIn: 86400});
+        const token = await jwt.sign({id: result._id}, config.secret, {expiresIn: 86400});
 
         res.cookie('token', token);
         res.redirect('/user/profile');
@@ -49,5 +50,4 @@ exports.signIn = async (req, res) => {
         console.log(err);
         res.status(500).send('Error login');
     }
-
 };

@@ -7,6 +7,7 @@ const User = new mongoose.Schema({
     email: {type: String, required: true, unique: true, trim: true},
     buy: {type: mongoose.Schema.Types.ObjectId, ref: buyList},
     role: {type: String, enum: ['admin', 'user'], default: 'user'},
+    money: {type: Number, min: 0},
 });
 
 module.exports = mongoose.model('User', User);
