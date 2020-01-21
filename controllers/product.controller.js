@@ -10,45 +10,46 @@ exports.create = async (req, res) => {
         price: req.body.price
     });
 
-    product.save(function(err) {
-        if (err) {
-            console.log(err);
-        } else res.send("Successful buying");
-    });
+    try {
+        await product.save();
+        res.status(200).send(product);
+    } catch (e) {
+        res.status(400).send(e);
+    }
 };
 
 exports.getSingleProduct = async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
-        res.send(product);
+        res.status(200).send(product);
     } catch (e) {
-        console.log(e);
+        res.status(400).send(e);
     }
 };
 
 exports.update = async (req, res) => {
     try {
         await Product.findByIdAndUpdate(req.params.id, {$set: req.body});
-        res.send("Successfully Update");
+        res.status(200).send("Successfully Update");
     } catch (e) {
-        console.log(e);
+        res.status(400).send(e);
     }
 };
 
 exports.delete = async (req, res) => {
     try {
-        await Product.findByIdAndDelete(req.params.id, {$set: req.body});
-        res.send("Successfully Deleting");
+        await Product.findByIdAndDelete(req.params.id);
+        res.status(200).send("Successfully Deleting");
     } catch (e) {
-        console.log(e);
+        res.status(400).send(e);
     }
 };
 
 exports.getProducts = async (req, res) => {
     try {
         const element = await Product.find();
-        res.json(element);
-    } catch(err) {
-        console.log(err);
+        res.status(200).send(element);
+    } catch(e) {
+        res.status(400).send(e);
     }
 };

@@ -7,7 +7,7 @@ const productManager = require('../controllers/product.controller');
 
 router.use('/', auth.verify);
 router.get('/profile', adminController.detail);
-router.delete('/delete/:id', adminController.delete_user);
+router.delete('/delete/:id', adminController.deleteUser);
 
 router.get('/products', productManager.getProducts);
 router.get('/products/:id', productManager.getSingleProduct);

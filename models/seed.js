@@ -7,7 +7,7 @@ const buylist = buyList.create();
 const newUser = new User({
     name: 'phuong',
     email: 'admin@gmail.com',
-    password: bcrypt.hashSync('admin', 10),
+    hash_password: bcrypt.hashSync('admin', 10),
     role: 'admin',
     buy: buylist._id,
 });

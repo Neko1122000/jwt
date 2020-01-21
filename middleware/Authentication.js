@@ -8,8 +8,11 @@ exports.authencate = async (req, res, next) => {
     if (!cookie.token) return res.status(401).send({ auth: false, message: 'No token provided.' });*/
 
     const token = req.get('Authorization').substring(7);
+    //console.log(token);
     jwt.verify(token, config.secret, function(err, decoded) {
-        if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+        if (err) {
+            return res.status(500).send(err.message);
+        }
 
         req.userId = decoded.id;
         next();

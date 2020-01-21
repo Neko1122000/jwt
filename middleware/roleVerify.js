@@ -2,12 +2,13 @@ const User = require('../models/User.model');
 
 exports.verify = async (req, res, next) => {
     try {
-        const user = User.findById(req.userId);
-        if (!user) return res.status(404).send('User not found');
-        if (user.role != 'admin') return res.status(401).send('Not authorized');
+        const user = await User.findById(req.userId);
+        if (!user) throw new Error('Not found');
+        //console.log(user);
+        if (user.role != 'admin') throw new Error('Not Authorized');
         next();
     } catch (e) {
-        console.log(e);
-        res.status(500).send('Admin verify err');
+        const message = e.message;
+        res.status(500).send(message);
     }
 };

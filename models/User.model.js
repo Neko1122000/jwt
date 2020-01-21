@@ -3,7 +3,7 @@ const buyList = require('../models/buyList.model');
 
 const User = new mongoose.Schema({
     name: {type: String, required: true, trim: true},
-    password: {type: String, required: true},
+    hash_password: {type: String, required: true},
     email: {type: String, required: true, unique: true, trim: true},
     buy: {type: mongoose.Schema.Types.ObjectId, ref: buyList},
     role: {type: String, enum: ['admin', 'user'], default: 'user'},

@@ -7,7 +7,7 @@ const admin = require('../routes/admin.router')
 
 router.use('/', auth.authencate);
 router.get('/profile', userController.detail);
-router.get('/logout', userController.logOut);
+//router.get('/logout', userController.logOut);
 router.put('/update', userController.userUpdate);
 
 router.post('/product/:id', userController.buy);
