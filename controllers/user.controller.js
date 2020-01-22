@@ -35,7 +35,7 @@ exports.buy = async (req, res) => {
         const user = await User.findById(req.userId).populate({path: 'buy', populate: 'nested.product'});
         const product = await Product.findById(productId);
         if (!product) throw new Error('Product not for sell');
-        if (!BuyList.findOne({_id: user.buy._id, 'nested.product': productId}))
+        if (BuyList.findOne({_id: user.buy._id, 'nested.product': productId}) != null)
             await BuyList.updateOne({_id: user.buy._id}, {$push: {nested: {product: productId, number}}});
         else await BuyList.updateOne({_id: user.buy._id, 'nested.product': productId}, {$inc: {'nested.$.number': number}});
         res.status(200).send(user.buy.nested);
@@ -121,7 +121,7 @@ exports.purchase = async (req, res) => {
         if (sum > user.money) return res.status(200).send('Not enough to purchase');
 
         user.money -= sum;
-        user.buy.nested.length = 0;
+        await BuyList.updateOne({_id: user.buy._id}, {$set: {nested: []}});
         user.save();
 
         res.status(200).send(user);
