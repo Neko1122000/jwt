@@ -9,6 +9,6 @@ exports.verify = async (req, res, next) => {
         next();
     } catch (e) {
         const message = e.message;
-        res.status(500).send(message);
+        res.status(401).send(message);
     }
 };

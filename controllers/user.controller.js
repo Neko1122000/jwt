@@ -19,7 +19,7 @@ exports.userUpdate = async (req, res) => {
         res.status(200).send(result);
     } catch (err) {
         console.log(err);
-        res.status(404).send('Listing Error');
+        res.status(500).send('Listing Error');
     }
 };
 
@@ -32,19 +32,12 @@ exports.buy = async (req, res) => {
     try {
         const {params: {id: productId}, body: {number}} = req;
 
-        // TODO: test
-        // const testObj = {
-        //     a: 'abc',
-        //     b: '111111',
-        //     c: 'aljflskjfs'
-        // }
-        //
-        // const {a: xxxxxxxx, b} = testObj;
-
         const user = await User.findById(req.userId).populate({path: 'buy', populate: 'nested.product'});
         const product = await Product.findById(productId);
         if (!product) throw new Error('Product not for sell');
-        await BuyList.updateOne({_id: user.buy._id}, {$push: {nested: {product: productId, number}}});
+        if (!BuyList.findOne({_id: user.buy._id, 'nested.product': productId}))
+            await BuyList.updateOne({_id: user.buy._id}, {$push: {nested: {product: productId, number}}});
+        else await BuyList.updateOne({_id: user.buy._id, 'nested.product': productId}, {$inc: {'nested.$.number': number}});
         res.status(200).send(user.buy.nested);
     } catch (e) {
         const message = e.message;
@@ -82,9 +75,11 @@ exports.update = async (req, res) => {
 exports.getSingleProduct = async (req, res) => {
     try {
         const user = await User.findById(req.userId).populate({path: 'buy', populate: 'nested.product'});
-        const pos = await user.buy.nested.findIndex(element => element.product._id == req.params.id);
+        const list = user.buy.nested;
+        const pos = await list.findIndex(element => element.product._id == req.params.id);
+
         if (pos != -1) {
-            res.send(user.buy.nested[pos]);
+            res.status(200).send(list[pos]);
         } else throw new Error('Product not found');
 
         //const {params: {id: productId}} = req;
@@ -100,43 +95,39 @@ exports.getProducts = async (req, res) => {
     try {
         const user = await User.findById(req.userId)
                                .populate({path: 'buy', populate: {path: 'nested.product'}});
-        res.send(user.buy.nested);
+        const list = user.buy.nested;
+        res.status(200).send(list);
     } catch (e) {
-        console.log(e);
-        return res.status(500).send(e.message);
+        const message = e.message;
+        return res.status(500).send(message);
     }
-}
+};
 
 exports.purchase = async (req, res) => {
     try {
-        const user = await User.findById(req.userId).populate('buy').exec();
-
-        //const productIds = []
-        //const products = await Product.find({_id: {$in: productIds}}).lean();
+        const user = await User.findById(req.userId).populate({path: 'buy', populate: 'nested.product'});
+        const purchaseList = user.buy.nested;
 
         // TODO: Research Array.reduce();
 
-
         let sum = 0;
-
-        for (let element of user.buy.nested) {
-            const product = await Product.findById(element.product);
-            sum += product.price * element.number;
+        for (let element of purchaseList) {
+            sum += element.product.price * element.number;
         }
 
         // for (let i in user.buy.nested) {
         // }
-        // for (let i = 0; i < user.buy.nested.length; ++i) {
-        //     let element = user.buy.nested[i];
-        // }
 
-        if (sum > user.money) return res.send('Not enough to purchase');
-        user.markModified('money');
+        if (sum > user.money) return res.status(200).send('Not enough to purchase');
+
         user.money -= sum;
         user.buy.nested.length = 0;
         user.save();
+
         res.status(200).send(user);
     } catch (e) {
+        const message = e.message;
         console.log(e);
+        return res.status(500).send(message);
     }
 };

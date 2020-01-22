@@ -14,7 +14,7 @@ exports.create = async (req, res) => {
         await product.save();
         res.status(200).send(product);
     } catch (e) {
-        res.status(400).send(e);
+        res.status(500).send(e);
     }
 };
 
@@ -23,7 +23,7 @@ exports.getSingleProduct = async (req, res) => {
         const product = await Product.findById(req.params.id);
         res.status(200).send(product);
     } catch (e) {
-        res.status(400).send(e);
+        res.status(500).send(e);
     }
 };
 
@@ -32,7 +32,7 @@ exports.update = async (req, res) => {
         await Product.findByIdAndUpdate(req.params.id, {$set: req.body});
         res.status(200).send("Successfully Update");
     } catch (e) {
-        res.status(400).send(e);
+        res.status(500).send(e);
     }
 };
 
@@ -41,7 +41,7 @@ exports.delete = async (req, res) => {
         await Product.findByIdAndDelete(req.params.id);
         res.status(200).send("Successfully Deleting");
     } catch (e) {
-        res.status(400).send(e);
+        res.status(500).send(e);
     }
 };
 
@@ -50,6 +50,6 @@ exports.getProducts = async (req, res) => {
         const element = await Product.find();
         res.status(200).send(element);
     } catch(e) {
-        res.status(400).send(e);
+        res.status(500).send(e);
     }
 };
