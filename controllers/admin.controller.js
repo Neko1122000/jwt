@@ -12,7 +12,7 @@ exports.detail = async (req, res) => {
         res.status(500).send(message);
     }
     //res.send('not ok');
-}
+};
 
 exports.deleteUser = async (req, res) => {
     try {
@@ -21,4 +21,4 @@ exports.deleteUser = async (req, res) => {
     } catch(err){
         console.log(err);
     }
-}
+};
