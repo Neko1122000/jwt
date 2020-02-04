@@ -1,5 +1,4 @@
 const User = require('../models/User.model');
-const Product = require('../models/product.model');
 const BuyList = require('../models/buyList.model');
 const bcrypt = require('bcryptjs');
 
@@ -16,12 +15,13 @@ exports.detail = async (req, res) => {
 
 exports.userUpdate = async (req, res) => {
     try {
-        if (req.body.password) req.body.hash_password = bcrypt.hashSync(req.body.password, 10);
-        const result = await User.findByIdAndUpdate(req.userId, {$set: req.body}, {useFindAndModify: false, new: true}).lean();
+        const {userId: userId, body: data} = req;
+        if (data.password) data.hash_password = bcrypt.hashSync(data.password, 10);
+        const result = await User.findByIdAndUpdate(userId, {$set: data}, {useFindAndModify: false, new: true}).lean();
 
         res.status(200).send(result);
     } catch (err) {
-        console.log(err);
+        //console.log(err);
         const message = err.message;
         res.status(500).send(message);
     }

@@ -21,7 +21,8 @@ exports.create = async (req, res) => {
 
 exports.getSingleProduct = async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id).lean();
+        const {params: {id: productId}} = req;
+        const product = await Product.findById(productId).lean();
         res.status(200).send(product);
     } catch (e) {
         const message = e.message
@@ -31,7 +32,8 @@ exports.getSingleProduct = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        await Product.findByIdAndUpdate(req.params.id, {$set: req.body}).lean();
+        const {params: {id: productId}, body: data} = req;
+        await Product.findByIdAndUpdate(productId, {$set: data}).lean();
         res.status(200).send("Successfully Update");
     } catch (e) {
         const message = e.message
@@ -41,7 +43,8 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        await Product.findByIdAndDelete(req.params.id);
+        const {params: {id: productId}} = req;
+        await Product.findByIdAndDelete(productId);
         res.status(200).send("Successfully Deleting");
     } catch (e) {
         const message = e.message
