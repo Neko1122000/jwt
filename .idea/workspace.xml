@@ -2,8 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="78c41915-5e02-457c-ad70-8dda9d435d55" name="Default Changelist" comment="update">
+      <change afterPath="$PROJECT_DIR$/html/products.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/product.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/product.controller.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/user.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/user.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/userListController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/userListController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/User.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/User.model.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/buyList.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/buyList.model.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/user.router.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/user.router.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,6 +22,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -29,6 +38,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -89,7 +99,7 @@
       <workItem from="1579571130701" duration="22446000" />
       <workItem from="1579657315744" duration="7884000" />
       <workItem from="1580694366589" duration="11393000" />
-      <workItem from="1580780728877" duration="4795000" />
+      <workItem from="1580780728877" duration="16034000" />
     </task>
     <servers />
   </component>
@@ -121,22 +131,22 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="421" y="97" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1579230892801" />
-    <state width="1259" height="163" key="GridCell.Tab.0.bottom" timestamp="1580786885045">
+    <state width="1259" height="163" key="GridCell.Tab.0.bottom" timestamp="1580789395608">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1580786885045" />
-    <state width="1259" height="163" key="GridCell.Tab.0.center" timestamp="1580786885044">
+    <state width="1259" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1580789395608" />
+    <state width="1259" height="163" key="GridCell.Tab.0.center" timestamp="1580789395608">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1580786885044" />
-    <state width="1259" height="163" key="GridCell.Tab.0.left" timestamp="1580786885044">
+    <state width="1259" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1580789395608" />
+    <state width="1259" height="163" key="GridCell.Tab.0.left" timestamp="1580789395607">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1580786885044" />
-    <state width="1259" height="163" key="GridCell.Tab.0.right" timestamp="1580786885044">
+    <state width="1259" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1580789395607" />
+    <state width="1259" height="163" key="GridCell.Tab.0.right" timestamp="1580789395608">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1580786885044" />
+    <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1580789395608" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1580694488735">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

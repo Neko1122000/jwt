@@ -11,7 +11,7 @@ router.delete('/delete/:id', adminController.deleteUser);
 
 router.get('/products', productManager.getProducts);
 router.get('/products/:id', productManager.getSingleProduct);
-router.post('/products', productManager.create);
+router.post('/products/:page', productManager.create);
 router.put('/products/:id', productManager.update);
 router.delete('/products/:id', productManager.delete);
 

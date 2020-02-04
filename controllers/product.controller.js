@@ -51,8 +51,14 @@ exports.delete = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
     try {
-        const element = await Product.find().lean();
-        res.status(200).send(element);
+        const perPage = 2;
+        const N = req.params.page;
+
+        const result = await Product.find({})
+                                    .skip(N*perPage)
+                                    .limit(perPage)
+                                    .sort({name: 1});
+        res.status(200).send(result);
     } catch(e) {
         const message = e.message
         res.status(500).send(message);

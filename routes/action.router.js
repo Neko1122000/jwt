@@ -14,7 +14,7 @@ router.post('/product/:id', userController.buy);
 router.delete('/product/:id', userController.delete);
 router.put('/product/:id', userController.update);
 router.get('/product/:id', userController.getSingleProduct);
-router.get('/products', userController.getProducts);
+router.get('/products/:page', userController.getProducts);
 router.get('/purchase', userController.purchase);
 
 router.use('/admin', admin);

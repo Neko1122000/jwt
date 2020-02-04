@@ -5,7 +5,7 @@ const productManager = require('../controllers/product.controller');
 
 router.post('/signup', userListController.create);
 router.post('/signin', userListController.signIn);
-router.get('/list', userListController.list);
+router.get('/users/:page', userListController.getUsers);
 
 router.get('/products/', productManager.getProducts);
 router.get('/products/:id', productManager.getSingleProduct);

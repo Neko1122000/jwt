@@ -9,8 +9,8 @@ exports.detail = async (req, res) => {
                                  .select({hash_password: 0}).lean();
         res.status(200).send(result);
     } catch (e) {
-        res.status(404).send('No User found');
-        console.log(e);
+        const message = e.message
+        res.status(404).send(message);
     }
 };
 
@@ -34,21 +34,13 @@ exports.userUpdate = async (req, res) => {
 
 exports.buy = async (req, res) => {
     try {
-        const {params: {id: productId}, body: {number}} = req;
-
-        const user = await User.findById(req.userId).lean();
-        const product = await Product.findById(productId).lean();
-        if (!product) throw new Error('Product not for sell');
-        //TODO: Upsert? -> Not too effient because not exist err
-        //const list = await BuyList.findOneAndUpdate({_id: user.buy._id, 'nested.product': productId},          {$set: {'nested.$.number': number}}, {upsert: true, new: true, useFindAndModify: false});
-
-        let newList;
-        const list = await BuyList.findOne({_id: user.buy._id, 'nested.product': productId}).lean().exec();
-        if (!list) {
-            newList = await BuyList.findOneAndUpdate({_id: user.buy._id}, {$push: {nested: {product: productId, number}}}, {new: true, useFindAndModify: false}).lean();
-        }
-        else newList = await BuyList.findOneAndUpdate({_id: user.buy._id, 'nested.product': productId}, {$inc: {'nested.$.number': number}}, {new: true, useFindAndModify: false}).lean();
-        res.status(200).send(newList);
+        const {params: {id: productId}, body: {quantity: quantity}, userId: userId} = req;
+        const newProduct = await BuyList.create({
+            product_id: productId,
+            quantity: quantity,
+            user_id: userId,
+        });
+        res.status(200).send(newProduct);
     } catch (e) {
         const message = e.message;
         res.status(500).send(message);
@@ -58,26 +50,21 @@ exports.buy = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const user = await User.findById(req.userId).lean();
-        const {params: {id: productId}} = req;
-
-        const list = await BuyList.findOneAndUpdate({_id: user.buy._id}, {$pull: {nested: {product: productId}}}, {new: true, useFindAndModify: false}).lean();
-
-        res.status(200).send(list);
-        // TODO: callback order?
+        const {params: {id: id}, userId: userId} = req;
+        await BuyList.findOneAndDelete({_id: id, user_id: userId}, {useFindAndModify: false});
+        res.redirect('/user/products');
     } catch (e) {
-        return res.status(500).send('Deleting false: ' + e.message);
+        const message = e.message
+        return res.status(500).send('Deleting false: ' + message);
     }
 };
 
 exports.update = async (req, res) => {
     try {
-        const user = await User.findById(req.userId).lean();
-        const {params: {id: productId}, body: {number}} = req;
+        const {params: {id: id}, body: {quantity: quantity}, userId: userId} = req;
 
-        const list = await BuyList.findOneAndUpdate({_id: user.buy._id, 'nested.product': productId}, {$set: {'nested.$.number': number}}, {new: true, useFindAndModify: false});
-
-        res.status(200).send(list.populate('nested.product').lean());
+        const product = await BuyList.findOneAndUpdate({_id: id, user_id: userId}, {$set: {quantity: quantity,     date: Date.now()}}, {new: true, useFindAndModify: false});
+        res.status(200).send(product);
     } catch (e) {
         const message = e.message;
         return res.status(500).send(message);
@@ -86,19 +73,9 @@ exports.update = async (req, res) => {
 
 exports.getSingleProduct = async (req, res) => {
     try {
-        const user = await User.findById(req.userId).lean();
-        let list = await BuyList.findById(user.buy).populate('nested.product').lean();
-        list = list.nested;
-        const pos = await list.findIndex(element => element.product._id == req.params.id);
-
-        if (pos !== -1) {
-            res.status(200).send(list[pos]);
-        } else throw new Error('Product not found');
-
-        //-> all BuyList
-        // const {params: {id: productId}} = req;
-        // const product = await BuyList.findOne({_id: user.buy._id, 'nested.product': productId}).lean();
-        // res.status(200).send(product);
+        const {params: {id: id}, userId: userId} = req;
+        const product = await BuyList.findOne({_id: id, user_id: userId});
+        res.status(200).send(product);
     } catch (e) {
         const message = e.message;
         return res.status(500).send(message);
@@ -107,8 +84,13 @@ exports.getSingleProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
     try {
-        const user = await User.findById(req.userId).lean();
-        const list = await BuyList.findById(user.buy).select({nested: 1, _id: 0}).populate('nested.product').lean();
+        const userId = req.userId;
+        const perPage = 2;
+        const N = req.params.page;
+        const list = await BuyList.find({user_id: userId})
+                                  .skip(N*perPage)
+                                  .limit(perPage)
+                                  .sort({created_at: 1});;
         res.status(200).send(list);
     } catch (e) {
         const message = e.message;
@@ -118,28 +100,9 @@ exports.getProducts = async (req, res) => {
 
 exports.purchase = async (req, res) => {
     try {
-        const user = await User.findById(req.userId).select({hash_password: 0});
-        let purchaseList = await BuyList.findById(user.buy).select({nested: 1}).populate('nested.product').lean();
-        purchaseList = purchaseList.nested;
-
-        // TODO: Research Array.reduce();
-
-        let sum = 0;
-        for (let element of purchaseList) {
-            sum += element.product.price * element.number;
-        }
-
-        // for (let i in user.buy.nested) {
-        // }
-
-        if (sum > user.money) return res.status(200).send('Not enough to purchase');
-        else {
-            user.money -= sum;
-            await BuyList.updateOne({_id: user.buy._id}, {$set: {nested: []}});
-
-            user.save();
-            res.status(200).send(user);
-        }
+        const userId = req.userId;
+        const purchaseList = await BuyList.findAndModify({query: {user_id: userId}, remove: true,});
+        res.status(200).send(purchaseList);
     } catch (e) {
         const message = e.message;
         //console.log(e);
