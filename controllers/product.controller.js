@@ -14,25 +14,28 @@ exports.create = async (req, res) => {
         await product.save();
         res.status(200).send(product);
     } catch (e) {
-        res.status(500).send(e);
+        const message = e.message
+        res.status(500).send(message);
     }
 };
 
 exports.getSingleProduct = async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id);
+        const product = await Product.findById(req.params.id).lean();
         res.status(200).send(product);
     } catch (e) {
-        res.status(500).send(e);
+        const message = e.message
+        res.status(500).send(message);
     }
 };
 
 exports.update = async (req, res) => {
     try {
-        await Product.findByIdAndUpdate(req.params.id, {$set: req.body});
+        await Product.findByIdAndUpdate(req.params.id, {$set: req.body}).lean();
         res.status(200).send("Successfully Update");
     } catch (e) {
-        res.status(500).send(e);
+        const message = e.message
+        res.status(500).send(message);
     }
 };
 
@@ -41,15 +44,17 @@ exports.delete = async (req, res) => {
         await Product.findByIdAndDelete(req.params.id);
         res.status(200).send("Successfully Deleting");
     } catch (e) {
-        res.status(500).send(e);
+        const message = e.message
+        res.status(500).send(message);
     }
 };
 
 exports.getProducts = async (req, res) => {
     try {
-        const element = await Product.find();
+        const element = await Product.find().lean();
         res.status(200).send(element);
     } catch(e) {
-        res.status(500).send(e);
+        const message = e.message
+        res.status(500).send(message);
     }
 };

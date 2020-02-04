@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 exports.detail = async (req, res) => {
     try {
         const result = await User.findById(req.userId)
-                                 .select({hash_password: 0});
+                                 .select({hash_password: 0}).lean();
         res.status(200).send(result);
     } catch (e) {
         res.status(404).send('No User found');
@@ -17,7 +17,7 @@ exports.detail = async (req, res) => {
 exports.userUpdate = async (req, res) => {
     try {
         if (req.body.password) req.body.hash_password = bcrypt.hashSync(req.body.password, 10);
-        const result = await User.findByIdAndUpdate(req.userId, {$set: req.body}, {useFindAndModify: false}).lean();
+        const result = await User.findByIdAndUpdate(req.userId, {$set: req.body}, {useFindAndModify: false, new: true}).lean();
 
         res.status(200).send(result);
     } catch (err) {
@@ -36,21 +36,19 @@ exports.buy = async (req, res) => {
     try {
         const {params: {id: productId}, body: {number}} = req;
 
-        const user = await User.findById(req.userId).populate({path: 'buy', populate: 'nested.product'}).lean();
+        const user = await User.findById(req.userId).lean();
         const product = await Product.findById(productId).lean();
         if (!product) throw new Error('Product not for sell');
         //TODO: Upsert? -> Not too effient because not exist err
-        // await BuyList.updateOne({_id: user.buy._id, 'nested.product': productId}, {$set: {'nested.$.number': number}},  {upsert: true},);
+        //const list = await BuyList.findOneAndUpdate({_id: user.buy._id, 'nested.product': productId},          {$set: {'nested.$.number': number}}, {upsert: true, new: true, useFindAndModify: false});
 
-        //const list = await BuyList.findOne({_id: user.buy._id}, nested: {$elemMatch: {product: productId}}).exec();
-        //if (list.nested.length == 0)
-
+        let newList;
         const list = await BuyList.findOne({_id: user.buy._id, 'nested.product': productId}).lean().exec();
         if (!list) {
-            await BuyList.updateOne({_id: user.buy._id}, {$push: {nested: {product: productId, number}}});
+            newList = await BuyList.findOneAndUpdate({_id: user.buy._id}, {$push: {nested: {product: productId, number}}}, {new: true, useFindAndModify: false}).lean();
         }
-        else await BuyList.updateOne({_id: user.buy._id, 'nested.product': productId}, {$inc: {'nested.$.number': number}});
-        res.status(200).send(user.buy.nested);
+        else newList = await BuyList.findOneAndUpdate({_id: user.buy._id, 'nested.product': productId}, {$inc: {'nested.$.number': number}}, {new: true, useFindAndModify: false}).lean();
+        res.status(200).send(newList);
     } catch (e) {
         const message = e.message;
         res.status(500).send(message);
@@ -60,12 +58,12 @@ exports.buy = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const user = await User.findById(req.userId).populate({path: 'buy', populate: 'nested.product'}).lean();
+        const user = await User.findById(req.userId).lean();
         const {params: {id: productId}} = req;
 
-        await BuyList.updateOne({_id: user.buy._id}, {$pull: {nested: {product: productId}}});
+        const list = await BuyList.findOneAndUpdate({_id: user.buy._id}, {$pull: {nested: {product: productId}}}, {new: true, useFindAndModify: false}).lean();
 
-        res.status(200).send(user.buy.nested);
+        res.status(200).send(list);
         // TODO: callback order?
     } catch (e) {
         return res.status(500).send('Deleting false: ' + e.message);
@@ -74,12 +72,12 @@ exports.delete = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const user = await User.findById(req.userId).populate({path: 'buy', populate: 'nested.product'}).lean();
+        const user = await User.findById(req.userId).lean();
         const {params: {id: productId}, body: {number}} = req;
 
-        await BuyList.updateOne({_id: user.buy._id, 'nested.product': productId}, {$set: {'nested.$.number': number}});
+        const list = await BuyList.findOneAndUpdate({_id: user.buy._id, 'nested.product': productId}, {$set: {'nested.$.number': number}}, {new: true, useFindAndModify: false});
 
-        res.status(200).send(user.buy.nested);
+        res.status(200).send(list.populate('nested.product').lean());
     } catch (e) {
         const message = e.message;
         return res.status(500).send(message);
@@ -88,8 +86,9 @@ exports.update = async (req, res) => {
 
 exports.getSingleProduct = async (req, res) => {
     try {
-        const user = await User.findById(req.userId).populate({path: 'buy', populate: 'nested.product'});
-        const list = user.buy.nested;
+        const user = await User.findById(req.userId).lean();
+        let list = await BuyList.findById(user.buy).populate('nested.product').lean();
+        list = list.nested;
         const pos = await list.findIndex(element => element.product._id == req.params.id);
 
         if (pos !== -1) {
@@ -108,9 +107,8 @@ exports.getSingleProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
     try {
-        const user = await User.findById(req.userId)
-                               .populate({path: 'buy', populate: {path: 'nested.product'}}).lean();
-        const list = user.buy.nested;
+        const user = await User.findById(req.userId).lean();
+        const list = await BuyList.findById(user.buy).select({nested: 1, _id: 0}).populate('nested.product').lean();
         res.status(200).send(list);
     } catch (e) {
         const message = e.message;
@@ -120,8 +118,9 @@ exports.getProducts = async (req, res) => {
 
 exports.purchase = async (req, res) => {
     try {
-        const user = await User.findById(req.userId).populate({path: 'buy', populate: 'nested.product'});
-        const purchaseList = user.buy.nested;
+        const user = await User.findById(req.userId).select({hash_password: 0});
+        let purchaseList = await BuyList.findById(user.buy).select({nested: 1}).populate('nested.product').lean();
+        purchaseList = purchaseList.nested;
 
         // TODO: Research Array.reduce();
 
