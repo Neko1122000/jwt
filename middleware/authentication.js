@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
-const cookies = require('cookie');
+const User = require('../models/User.model');
 
 exports.authencate = async (req, res, next) => {
     /*if (!req.headers.cookie) return res.status(401).send({ auth: false, message: 'No token provided.' });
@@ -17,4 +17,17 @@ exports.authencate = async (req, res, next) => {
         req.userId = decoded.id;
         next();
     });
+};
+
+exports.verify = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.userId);
+        if (!user) throw new Error('Not found');
+        //console.log(user);
+        if (user.role !== 'admin') throw new Error('Not Authorized');
+        next();
+    } catch (e) {
+        const message = e.message;
+        res.status(401).send(message);
+    }
 };

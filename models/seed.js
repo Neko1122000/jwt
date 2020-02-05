@@ -1,5 +1,5 @@
 const User = require('../models/User.model');
-const buyList = require('../models/buyList.model');
+const buyList = require('./order.model');
 const bcrypt = require('bcryptjs');
 
 const buylist = buyList.create();
