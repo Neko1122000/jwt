@@ -55,11 +55,13 @@ exports.delete = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
     try {
-        const {params: {limit: perPage, page: N}} = req;
+        const {limit: lim, page: pag} = req.query;
+        const limit = lim? parseInt(lim): 2;
+        const page = pag? parseInt(pag): 0;
 
         const result = await Product.find({})
-                                    .skip(N*perPage)
-                                    .limit(perPage)
+                                    .skip(page*limit)
+                                    .limit(limit)
                                     .sort({name: 1});
         res.status(200).send(result);
     } catch(e) {
@@ -71,6 +73,7 @@ exports.getProducts = async (req, res) => {
 exports.checkout = async (req, res) => {
     try {
         const {params: {id: productId}, body: {quantity: quantity}, userId: userId} = req;
+        if (quantity == 0) throw new Error('Quantity must be larger than 0');
         const newProduct = await Orders.create({
             product_id: productId,
             quantity: quantity,

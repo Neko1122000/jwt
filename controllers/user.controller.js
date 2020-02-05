@@ -6,12 +6,14 @@ const config = require('../config/config');
 
 exports.getUsers = async (req, res) => {
     try {
-        const {params: {limit: perPage, page: N}} = req;
+        const {limit: lim, page: pag} = req.query;
+        const limit = lim? parseInt(lim): 2;
+        const page = pag? parseInt(pag): 0;
 
-        const result = await User.find({})
+        const result = await User.find()
             .select({hash_password: 0})
-            .skip(N*perPage)
-            .limit(perPage)
+            .skip(page*limit)
+            .limit(limit)
             .sort({name: 1});
         res.status(200).send(result);
     } catch (e) {
@@ -33,7 +35,7 @@ exports.register = async (req, res) => {
         await newUser.save();
         const token = await jwt.sign({id: newUser._id}, config.secret, {expiresIn: 84600});
 
-        console.log(token);
+        //console.log(token);
         res.status(200).send(token);
     } catch (e) {
         console.log(e);
@@ -72,7 +74,6 @@ exports.getSingleUser = async (req, res) => {
         const result = await User.findById(req.userId)
                                  .select({hash_password: 0}).lean();
         res.status(200).send(result);
-        console.log(req.userId);
     } catch (e) {
         const message = e.message;
         res.status(404).send(message);
@@ -119,10 +120,13 @@ exports.getSingleOrder = async (req, res) => {
 
 exports.getOrders = async (req, res) => {
     try {
-        const {params: {limit: perPage, page: N}, userId: userId} = req;
+        const {query: {limit: lim, page: pag}, userId: userId} = req.query;
+        const limit = lim? parseInt(lim): 2;
+        const page = pag? parseInt(pag): 0;
+
         const list = await Order.find({user_id: userId})
-                                  .skip(N*perPage)
-                                  .limit(perPage)
+                                  .skip(page*limit)
+                                  .limit(limit)
                                   .sort({created_at: 1});
         res.status(200).send(list);
     } catch (e) {
