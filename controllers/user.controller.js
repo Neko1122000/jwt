@@ -6,7 +6,7 @@ const config = require('../config/config');
 
 exports.getUsers = async (req, res) => {
     try {
-        const {limit: lim, page: pag} = req.query;
+        const {limit: lim, page: pag, sort_by: sortType} = req.query;
         const limit = lim? parseInt(lim): 2;
         const page = pag? parseInt(pag): 0;
 
@@ -14,7 +14,7 @@ exports.getUsers = async (req, res) => {
             .select({hash_password: 0})
             .skip(page*limit)
             .limit(limit)
-            .sort({name: 1});
+            .sort(sortType);
         res.status(200).send(result);
     } catch (e) {
         console.log(e);
@@ -120,14 +120,14 @@ exports.getSingleOrder = async (req, res) => {
 
 exports.getOrders = async (req, res) => {
     try {
-        const {query: {limit: lim, page: pag}, userId: userId} = req.query;
+        const {query: {limit: lim, page: pag}, userId: userId, sort_by: sortType} = req.query;
         const limit = lim? parseInt(lim): 2;
         const page = pag? parseInt(pag): 0;
 
         const list = await Order.find({user_id: userId})
                                   .skip(page*limit)
                                   .limit(limit)
-                                  .sort({created_at: 1});
+                                  .sort(sortType);
         res.status(200).send(list);
     } catch (e) {
         const message = e.message;

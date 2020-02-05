@@ -55,14 +55,14 @@ exports.delete = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
     try {
-        const {limit: lim, page: pag} = req.query;
+        const {limit: lim, page: pag, sort_by: sortType} = req.query;
         const limit = lim? parseInt(lim): 2;
         const page = pag? parseInt(pag): 0;
 
         const result = await Product.find({})
                                     .skip(page*limit)
                                     .limit(limit)
-                                    .sort({name: 1});
+                                    .sort(sortType);
         res.status(200).send(result);
     } catch(e) {
         const message = e.message;
