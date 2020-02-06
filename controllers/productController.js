@@ -1,5 +1,6 @@
-const Product = require('../models/product.model');
-const Orders = require('../models/order.model');
+const Product = require('../models/Product');
+const Orders = require('../models/Order');
+const parse = require('../helpers/getNumber')
 
 exports.test = function(req, res){
     res.send("Testing");
@@ -55,8 +56,11 @@ exports.delete = async (req, res) => {
 exports.getProducts = async (req, res) => {
     try {
         const {limit: lim, page: pag, sort_by: sortType} = req.query;
-        const limit = lim? parseInt(lim): 2;
-        const page = pag? parseInt(pag): 1;
+        // const limit = lim? parseInt(lim): 2;
+        // const page = pag? parseInt(pag): 1;
+
+        const page = parse.getNumberIfPossitive(pag) || 1;
+        const limit = parse.getNumberIfPossitive(lim) || 10;
 
         const result = await Product.find({})
                                     .skip((page-1)*limit)
@@ -71,7 +75,7 @@ exports.getProducts = async (req, res) => {
 
 exports.checkout = async (req, res) => {
     try {
-        const {params: {id: productId}, body: {quantity: quantity}, userId: userId} = req;
+        const {params: {id: productId}, body: {quantity}, userId: userId} = req;
 
         if (quantity <= 0) throw new Error('Quantity must be larger than 0');
 

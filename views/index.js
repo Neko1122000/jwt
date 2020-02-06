@@ -16,7 +16,7 @@ const port = 8080;
 app.use(bodyparser.urlencoded({extended: false}));
 app.use(bodyparser.json());
 
-const router = require('../routes/user.router');
+const router = require('../routes/router');
 app.use('/', router);
 
 app.listen(port, () => {

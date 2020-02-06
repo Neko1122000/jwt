@@ -1,14 +1,18 @@
-const User = require('../models/User.model');
-const Order = require('../models/order.model');
+const User = require('../models/User');
+const Order = require('../models/Order');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
+const parse = require('../helpers/getNumber')
 
 exports.getUsers = async (req, res) => {
     try {
         const {limit: lim, page: pag, sort_by: sortType} = req.query;
-        const limit = lim? parseInt(lim): 2;
-        const page = pag? parseInt(pag): 1;
+        // const limit = lim? parseInt(lim): 2;
+        // const page = pag? parseInt(pag): 1;
+
+        const page = parse.getNumberIfPossitive(pag) || 1;
+        const limit = parse.getNumberIfPossitive(lim) || 10;
 
         const result = await User.find()
             .select({hash_password: 0})
@@ -120,8 +124,11 @@ exports.getSingleOrder = async (req, res) => {
 exports.getOrders = async (req, res) => {
     try {
         const {query: {limit: lim, page: pag, sort_by: sortType}, userId: userId} = req;
-        const limit = lim? parseInt(lim): 2;
-        const page = pag? parseInt(pag): 1;
+        // const limit = lim? parseInt(lim): 2;
+        // const page = pag? parseInt(pag): 1;
+
+        const page = parse.getNumberIfPossitive(pag) || 1;
+        const limit = parse.getNumberIfPossitive(lim) || 10;
 
         const list = await Order.find({user_id: userId})
                                   .skip((page-1)*limit)
@@ -134,5 +141,4 @@ exports.getOrders = async (req, res) => {
     }
 };
 
-//TODO: page, limit parse from String?
 
