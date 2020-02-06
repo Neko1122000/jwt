@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="78c41915-5e02-457c-ad70-8dda9d435d55" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/helpers/getNumber.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/actions/ProductActions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/actions/UserAction.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/product.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/productController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/user.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/userController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/user.router.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/user.router.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/productController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/productController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/userController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helpers/getNumber.js" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/getNumber.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/seed.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/seed.test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +100,7 @@
       <workItem from="1580867018769" duration="804000" />
       <workItem from="1580876213745" duration="13679000" />
       <workItem from="1580953262676" duration="6622000" />
-      <workItem from="1580970373346" duration="3207000" />
+      <workItem from="1580970373346" duration="10516000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <created>1580810277857</created>

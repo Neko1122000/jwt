@@ -1,6 +1,5 @@
-const Product = require('../models/Product');
-const Orders = require('../models/Order');
-const parse = require('../helpers/getNumber')
+
+const productActions = require('../actions/ProductActions');
 
 exports.test = function(req, res){
     res.send("Testing");
@@ -8,11 +7,7 @@ exports.test = function(req, res){
 
 exports.create = async (req, res) => {
     try {
-        const {body: {name, price}} = req;
-        let product = await Product.create({
-            name,
-            price,
-        });
+        const product = await productActions.create(req.body);
         res.status(200).send(product);
     } catch (e) {
         const message = e.message;
@@ -23,7 +18,7 @@ exports.create = async (req, res) => {
 exports.getSingleProduct = async (req, res) => {
     try {
         const {params: {id: productId}} = req;
-        const product = await Product.findById(productId).lean();
+        const product = await productActions.getSingleProduct(productId);
         res.status(200).send(product);
     } catch (e) {
         const message = e.message;
@@ -34,7 +29,7 @@ exports.getSingleProduct = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         const {params: {id: productId}, body: data} = req;
-         Product.updateOne({_id: productId}, {$set: data}).lean();
+        productActions.update(productId, data);
         res.status(200).send("Successfully Update");
     } catch (e) {
         const message = e.message;
@@ -45,7 +40,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const {params: {id: productId}} = req;
-        Product.deleteOne({_id: productId});
+        productActions.delete(productId);
         res.status(200).send("Successfully Deleting");
     } catch (e) {
         const message = e.message;
@@ -55,17 +50,7 @@ exports.delete = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
     try {
-        const {limit: lim, page: pag, sort_by: sortType} = req.query;
-        // const limit = lim? parseInt(lim): 2;
-        // const page = pag? parseInt(pag): 1;
-
-        const page = parse.getNumberIfPossitive(pag) || 1;
-        const limit = parse.getNumberIfPossitive(lim) || 10;
-
-        const result = await Product.find({})
-                                    .skip((page-1)*limit)
-                                    .limit(limit)
-                                    .sort(sortType);
+        const result = await productActions.getProducts(res.query);
         res.status(200).send(result);
     } catch(e) {
         const message = e.message;
@@ -75,17 +60,14 @@ exports.getProducts = async (req, res) => {
 
 exports.checkout = async (req, res) => {
     try {
-        const {params: {id: productId}, body: {quantity}, userId: userId} = req;
-
-        if (quantity <= 0) throw new Error('Quantity must be larger than 0');
-
-        const newProduct = await Orders.create({
-            product_id: productId,
-            quantity: quantity,
-            user_id: userId,
-        });
-
-        res.status(200).send(newProduct);
+        //const {params: {id: data.product_id}, body: {data.quantity}, userId: data.user_id} = req;
+        const data = {
+            product_id: req.params.id,
+            quantity : req.body.quantity,
+            user_id: req.userId,
+        };
+        const newOrder = await productActions.checkout(data);
+        res.status(200).send(newOrder);
     } catch (e) {
         const message = e.message;
         res.status(500).send(message);
