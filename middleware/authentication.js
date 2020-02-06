@@ -7,9 +7,10 @@ exports.authencate = async (req, res, next) => {
     const cookie = cookies.parse(req.headers.cookie);
     if (!cookie.token) return res.status(401).send({ auth: false, message: 'No token provided.' });*/
 
-    const token = req.get('Authorization').substring(7);
+    const token = req.get('Authorization').split(" ");
+    if (token[0] !== 'Bearer') return res.status(500).send(err.message);
     //console.log(token);
-    jwt.verify(token, config.secret, function(err, decoded) {
+    jwt.verify(token[1], config.secret, function(err, decoded) {
         if (err) {
             return res.status(500).send(err.message);
         }

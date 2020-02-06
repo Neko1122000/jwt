@@ -8,11 +8,11 @@ exports.getUsers = async (req, res) => {
     try {
         const {limit: lim, page: pag, sort_by: sortType} = req.query;
         const limit = lim? parseInt(lim): 2;
-        const page = pag? parseInt(pag): 0;
+        const page = pag? parseInt(pag): 1;
 
         const result = await User.find()
             .select({hash_password: 0})
-            .skip(page*limit)
+            .skip((page-1)*limit)
             .limit(limit)
             .sort(sortType);
         res.status(200).send(result);
@@ -24,15 +24,14 @@ exports.getUsers = async (req, res) => {
 
 exports.register = async (req, res) => {
     try {
-        const {name: name, email: email, password: password} = req.body;
+        const {name, email, password} = req.body;
         const hashPassword = bcrypt.hashSync(password, 10);
 
-        let newUser = new User({
-            name: name,
-            email: email,
+        let newUser = User.create({
+            name,
+            email,
             hash_password: hashPassword,
         });
-        await newUser.save();
         const token = await jwt.sign({id: newUser._id}, config.secret, {expiresIn: 84600});
 
         //console.log(token);
@@ -45,7 +44,7 @@ exports.register = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const userId = req.params.id;
-        await User.findByIdAndDelete(userId);
+        User.deleteOne({_id: userId});
         res.status(200).send('Successfully delete');
     } catch(err){
         console.log(err);
@@ -54,8 +53,8 @@ exports.delete = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
-        const result = await User.findOne({email: req.body.email});
-        const {body: {password: password}} = req;
+        const {body: {password, email}} = req;
+        const result = await User.findOne({email: email});
         if (!result) return res.status(404).send('Email / password not correct');
 
         const verify = await bcrypt.compareSync(password, result.hash_password);
@@ -83,9 +82,9 @@ exports.getSingleUser = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         const {userId: userId, body: data} = req;
-        const result = await User.findByIdAndUpdate(userId, {$set: data}, {useFindAndModify: false, new: true}).lean();
+        User.updateOne(userId, {$set: data}, {new: true}).lean();
 
-        res.status(200).send(result);
+        res.status(200).send('update successfully');
     } catch (err) {
         //console.log(err);
         const message = err.message;
@@ -100,16 +99,16 @@ exports.changePassword = async (req, res) => {
     const verify = bcrypt.compareSync(oldPassword, user.hash_password);
     if (!verify) return res.status(200).send("Password don't match");
 
-    const new_hash_password = bcrypt.hashSync(newPassword, 10);
-    await user.markModified('hash_password');
-    user.hash_password = new_hash_password;
-    user.save();
-    res.status(200).send(user);
+    const newHashPassword = bcrypt.hashSync(newPassword, 10);
+
+    User.updateOne({_id: userId}, {$set: {hash_password: newHashPassword}});
+
+    res.status(200).send("user updated");
 };
 
 exports.getSingleOrder = async (req, res) => {
     try {
-        const {params: {id: id}, userId: userId} = req;
+        const {params: {id}, userId} = req;
         const product = await Order.findOne({_id: id, user_id: userId});
         res.status(200).send(product);
     } catch (e) {
@@ -120,12 +119,12 @@ exports.getSingleOrder = async (req, res) => {
 
 exports.getOrders = async (req, res) => {
     try {
-        const {query: {limit: lim, page: pag}, userId: userId, sort_by: sortType} = req.query;
+        const {query: {limit: lim, page: pag, sort_by: sortType}, userId: userId} = req;
         const limit = lim? parseInt(lim): 2;
-        const page = pag? parseInt(pag): 0;
+        const page = pag? parseInt(pag): 1;
 
         const list = await Order.find({user_id: userId})
-                                  .skip(page*limit)
+                                  .skip((page-1)*limit)
                                   .limit(limit)
                                   .sort(sortType);
         res.status(200).send(list);
@@ -134,4 +133,6 @@ exports.getOrders = async (req, res) => {
         return res.status(500).send(message);
     }
 };
+
+//TODO: page, limit parse from String?
 

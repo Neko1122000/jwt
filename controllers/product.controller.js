@@ -6,13 +6,12 @@ exports.test = function(req, res){
 };
 
 exports.create = async (req, res) => {
-    let product = new Product({
-        name: req.body.name,
-        price: req.body.price
-    });
-
     try {
-        await product.save();
+        const {body: {name, price}} = req;
+        let product = await Product.create({
+            name,
+            price,
+        });
         res.status(200).send(product);
     } catch (e) {
         const message = e.message;
@@ -34,7 +33,7 @@ exports.getSingleProduct = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         const {params: {id: productId}, body: data} = req;
-        await Product.findByIdAndUpdate(productId, {$set: data}).lean();
+         Product.updateOne({_id: productId}, {$set: data}).lean();
         res.status(200).send("Successfully Update");
     } catch (e) {
         const message = e.message;
@@ -45,7 +44,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const {params: {id: productId}} = req;
-        await Product.findByIdAndDelete(productId);
+        Product.deleteOne({_id: productId});
         res.status(200).send("Successfully Deleting");
     } catch (e) {
         const message = e.message;
@@ -57,10 +56,10 @@ exports.getProducts = async (req, res) => {
     try {
         const {limit: lim, page: pag, sort_by: sortType} = req.query;
         const limit = lim? parseInt(lim): 2;
-        const page = pag? parseInt(pag): 0;
+        const page = pag? parseInt(pag): 1;
 
         const result = await Product.find({})
-                                    .skip(page*limit)
+                                    .skip((page-1)*limit)
                                     .limit(limit)
                                     .sort(sortType);
         res.status(200).send(result);
@@ -73,12 +72,15 @@ exports.getProducts = async (req, res) => {
 exports.checkout = async (req, res) => {
     try {
         const {params: {id: productId}, body: {quantity: quantity}, userId: userId} = req;
-        if (quantity == 0) throw new Error('Quantity must be larger than 0');
+
+        if (quantity <= 0) throw new Error('Quantity must be larger than 0');
+
         const newProduct = await Orders.create({
             product_id: productId,
             quantity: quantity,
             user_id: userId,
         });
+
         res.status(200).send(newProduct);
     } catch (e) {
         const message = e.message;
