@@ -17,20 +17,22 @@ exports.getUsers = async (params = {}) => {
         .limit(limit)
         .sort(sortType).lean();
 
-    return {
-        users: users,
-        page: page,
-        limit: limit,
-        total: 1000
-    };
+    if (users) {
+        return {
+            users: users,
+            page: page,
+            limit: limit,
+            total: await User.countDocuments(),
+        }
+    } else return null;
 };
 
 exports.update = async (id, data) => {
-    User.updateOne(id, {$set: data}, {new: true});
+    return (User.findByIdAndUpdate(id, {$set: data}, {new: true, useFindAndModify: false}));
 };
 
 exports.delete = async (id) => {
-    User.deleteOne({_id: id});
+    return (User.deleteOne({_id: id}));
 };
 
 exports.getSingleUser = async (id) => {
@@ -58,10 +60,10 @@ exports.register = async (params = {}) => {
 exports.login = async (params = {}) => {
     const  {password, email} = params;
     const result = await User.findOne({email: email});
-    if (!result) return res.status(404).send('Email / password not correct');
+    if (!result) throw new Error ('Email / password not correct');
 
     const verify = bcrypt.compareSync(password, result.hash_password);
-    if (!verify) return res.status(401).send('Email / password not correct');
+    if (!verify) throw new Error ('Email / password not correct');
     const token = await jwt.sign({id: result._id}, config.secret, {expiresIn: 86400});
     return ({
         token: token,
@@ -74,7 +76,7 @@ exports.changePassword = async (id, password) => {
 
     const user = await User.findById(id);
     const verify = bcrypt.compareSync(oldPassword, user.hash_password);
-    if (!verify) return res.status(200).send("Password don't match");
+    if (!verify) throw new Error ("Password don't match");
 
     const newHashPassword = bcrypt.hashSync(newPassword, 10);
 
@@ -93,12 +95,14 @@ exports.getOrders = async (id, query) => {
         .skip((page-1)*limit)
         .limit(limit)
         .sort(sortType);
-    return ({
-        orders: list,
-        page: page,
-        limit: limit,
-        total: 1000
-    });
+    if (list) {
+        return ({
+            orders: list,
+            page: page,
+            limit: limit,
+            total: await Order.countDocuments(),
+        });
+    } else return null;
 };
 
 exports.getSingleOrder = async (id) => {

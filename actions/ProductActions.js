@@ -3,18 +3,17 @@ const parse = require('../helpers/getNumber');
 const Order = require('../models/Order');
 
 exports.create = async (data) => {
-    return (Product.create({
-        name: data.name,
-        price: data.price,
-    }));
+    const price = parse.getNumberIfPositive(data.price);
+    if (!price) return ("Price must be number larger than 0");
+    return (Product.create({data}));
 };
 
 exports.update = async (id, data) => {
-    Product.updateOne({_id: id}, {$set: data});
+    return (Product.findOneAndUpdate({_id: id}, {$set: data}, {new: true, useFindAndModify: false}));
 };
 
 exports.delete = async (id) => {
-    Product.deleteOne({_id: id});
+    return (Product.deleteOne({_id: id}));
 };
 
 exports.getSingleProduct = async (id) => {
@@ -32,17 +31,21 @@ exports.getProducts = async (params = {}) => {
                                 .skip((page-1)*limit)
                                 .limit(limit)
                                 .sort(sortType).lean();
-
-    return {
-        products: products,
-        page: page,
-        limit: limit,
-        total: 1000
-    };
+    if (products) {
+        return {
+            products: products,
+            page: page,
+            limit: limit,
+            total: await Product.countDocuments(),
+        }
+    } else return null;
 };
 
 exports.checkout = async (data = {}) => {
-    if (data.quantity <= 0) throw new Error('Quantity must be larger than 0');
+    const quantity = parse.getNumberIfPositive(data.quantity);
+    if (!quantity) return ('Quantity must be larger than 0');
+    const product = await Product.findById(data.product_id);
+    if (product == null) return ('Product not found');
     return(Order.create(data));
 };
 

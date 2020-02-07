@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="78c41915-5e02-457c-ad70-8dda9d435d55" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/actions/ProductActions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/actions/UserAction.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actions/ProductActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/actions/ProductActions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actions/UserAction.js" beforeDir="false" afterPath="$PROJECT_DIR$/actions/UserAction.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/productController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/productController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/userController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/helpers/getNumber.js" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/getNumber.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/seed.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/seed.test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +98,9 @@
       <workItem from="1580867018769" duration="804000" />
       <workItem from="1580876213745" duration="13679000" />
       <workItem from="1580953262676" duration="6622000" />
-      <workItem from="1580970373346" duration="10516000" />
+      <workItem from="1580970373346" duration="10966000" />
+      <workItem from="1580982926133" duration="2513000" />
+      <workItem from="1581039736643" duration="2227000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <created>1580810277857</created>
@@ -136,10 +136,10 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="265" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1580810276854" />
-    <state x="421" y="97" key="FileChooserDialogImpl" timestamp="1579230892801">
+    <state x="421" y="97" key="FileChooserDialogImpl" timestamp="1580982783442">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="421" y="97" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1579230892801" />
+    <state x="421" y="97" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1580982783442" />
     <state width="1259" height="163" key="GridCell.Tab.0.bottom" timestamp="1580899423617">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -160,10 +160,10 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1580694488735" />
-    <state x="450" y="259" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1580810266294">
+    <state x="450" y="259" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1581041965445">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="450" y="259" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680@0.0.1280.680" timestamp="1580810266294" />
+    <state x="450" y="259" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680@0.0.1280.680" timestamp="1581041965445" />
     <state x="0" y="0" width="612" height="680" key="find.popup" timestamp="1580696295795">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

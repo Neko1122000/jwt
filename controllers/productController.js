@@ -1,4 +1,3 @@
-
 const productActions = require('../actions/ProductActions');
 
 exports.test = function(req, res){
@@ -17,9 +16,8 @@ exports.create = async (req, res) => {
 
 exports.getSingleProduct = async (req, res) => {
     try {
-        const {params: {id: productId}} = req;
-        const product = await productActions.getSingleProduct(productId);
-        res.status(200).send(product);
+        const product = await productActions.getSingleProduct(req.params.id);
+        res.status(200).send(product || "Product not found");
     } catch (e) {
         const message = e.message;
         res.status(500).send(message);
@@ -28,9 +26,8 @@ exports.getSingleProduct = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const {params: {id: productId}, body: data} = req;
-        productActions.update(productId, data);
-        res.status(200).send("Successfully Update");
+        const result = await productActions.update(req.params.id, req.body);
+        res.status(200).send(result || "Product not found");
     } catch (e) {
         const message = e.message;
         res.status(500).send(message);
@@ -39,9 +36,8 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const {params: {id: productId}} = req;
-        productActions.delete(productId);
-        res.status(200).send("Successfully Deleting");
+        const result = await productActions.delete(req.params.id);
+        res.status(200).send(result);
     } catch (e) {
         const message = e.message;
         res.status(500).send(message);
@@ -51,7 +47,7 @@ exports.delete = async (req, res) => {
 exports.getProducts = async (req, res) => {
     try {
         const result = await productActions.getProducts(res.query);
-        res.status(200).send(result);
+        res.status(200).send(result || "Product not found");
     } catch(e) {
         const message = e.message;
         res.status(500).send(message);
