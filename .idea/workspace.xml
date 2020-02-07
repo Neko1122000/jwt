@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="78c41915-5e02-457c-ad70-8dda9d435d55" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware/authentication.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/authentication.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/router.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/router.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +97,7 @@
       <workItem from="1580953262676" duration="6622000" />
       <workItem from="1580970373346" duration="10966000" />
       <workItem from="1580982926133" duration="2513000" />
-      <workItem from="1581039736643" duration="8048000" />
+      <workItem from="1581039736643" duration="8621000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <created>1580810277857</created>
@@ -135,7 +134,14 @@
       <option name="project" value="LOCAL" />
       <updated>1581059228950</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="update">
+      <created>1581060799400</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1581060799400</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -158,10 +164,10 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="371" y="89" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1280.680@0.0.1280.680" timestamp="1579576111171" />
-    <state x="265" y="0" key="CommitChangelistDialog2" timestamp="1581059228170">
+    <state x="265" y="0" key="CommitChangelistDialog2" timestamp="1581060798492">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="265" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1581059228170" />
+    <state x="265" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1581060798492" />
     <state x="421" y="97" key="FileChooserDialogImpl" timestamp="1581042037752">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

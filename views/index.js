@@ -21,4 +21,4 @@ app.use('/', router);
 
 app.listen(port, () => {
     console.log('Listening port ' + port);
-})
+});
