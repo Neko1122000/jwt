@@ -80,7 +80,7 @@ exports.changePassword = async (id, password) => {
 
     const newHashPassword = bcrypt.hashSync(newPassword, 10);
 
-    User.updateOne({_id: userId}, {$set: {hash_password: newHashPassword}});
+    User.updateOne({_id: id}, {$set: {hash_password: newHashPassword}});
 };
 
 exports.getOrders = async (id, query) => {

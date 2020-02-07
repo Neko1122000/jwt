@@ -1,6 +1,5 @@
 const userActions = require('../actions/UserAction');
 
-
 exports.getUsers = async (req, res) => {
     try {
         const result = await userActions.getUsers(req.query);
