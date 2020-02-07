@@ -3,7 +3,7 @@ const parse = require('../helpers/getNumber');
 const Order = require('../models/Order');
 
 exports.create = async (data) => {
-    const price = parse.getNumberIfPositive(data.price);
+    const price = await parse.getNumberIfPositive(data.price);
     if (!price) return ("Price must be number larger than 0");
     return (Product.create({data}));
 };
@@ -31,7 +31,7 @@ exports.getProducts = async (params = {}) => {
                                 .skip((page-1)*limit)
                                 .limit(limit)
                                 .sort(sortType).lean();
-    if (products) {
+    if (products.length > 0) {
         return {
             products: products,
             page: page,
@@ -42,7 +42,7 @@ exports.getProducts = async (params = {}) => {
 };
 
 exports.checkout = async (data = {}) => {
-    const quantity = parse.getNumberIfPositive(data.quantity);
+    const quantity = await parse.getNumberIfPositive(data.quantity);
     if (!quantity) return ('Quantity must be larger than 0');
     const product = await Product.findById(data.product_id);
     if (product == null) return ('Product not found');

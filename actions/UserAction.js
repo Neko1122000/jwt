@@ -17,7 +17,7 @@ exports.getUsers = async (params = {}) => {
         .limit(limit)
         .sort(sortType).lean();
 
-    if (users) {
+    if (users.length > 0) {
         return {
             users: users,
             page: page,
@@ -85,22 +85,20 @@ exports.changePassword = async (id, password) => {
 
 exports.getOrders = async (id, query) => {
     const {limit: lim, page: pag, sort_by: sortType} = query;
-    // const limit = lim? parseInt(lim): 2;
-    // const page = pag? parseInt(pag): 1;
 
-    const page = parse.getNumberIfPossitive(pag) || 1;
-    const limit = parse.getNumberIfPossitive(lim) || 10;
+    const page = await parse.getNumberIfPositive(pag) || 1;
+    const limit = await parse.getNumberIfPositive(lim) || 10;
 
     const list = await Order.find({user_id: id})
-        .skip((page-1)*limit)
-        .limit(limit)
-        .sort(sortType);
-    if (list) {
+                            .skip((page-1)*limit)
+                            .limit(limit)
+                            .sort(sortType);
+    if (list.length > 0) {
         return ({
             orders: list,
             page: page,
             limit: limit,
-            total: await Order.countDocuments(),
+            total: await Order.countDocuments({user_id: id}),
         });
     } else return null;
 };
