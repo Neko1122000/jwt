@@ -9,6 +9,8 @@ exports.create = async (data) => {
 };
 
 exports.update = async (id, data) => {
+    const price = await parse.getNumberIfPositive(data.price);
+    if (!price) return ("Price must be number larger than 0");
     return (Product.findOneAndUpdate({_id: id}, {$set: data}, {new: true, useFindAndModify: false}));
 };
 
@@ -17,7 +19,7 @@ exports.delete = async (id) => {
 };
 
 exports.getSingleProduct = async (id) => {
-    return (Product.findById(id).lean());
+    return (Product.findById(id).select({_id: 0}).lean());
 };
 
 exports.getProducts = async (params = {}) => {
@@ -31,14 +33,12 @@ exports.getProducts = async (params = {}) => {
                                 .skip((page-1)*limit)
                                 .limit(limit)
                                 .sort(sortType).lean();
-    if (products.length > 0) {
-        return {
-            products: products,
-            page: page,
-            limit: limit,
-            total: await Product.countDocuments(),
-        }
-    } else return null;
+   return {
+       products: products,
+       page: page,
+       limit: limit,
+       total: await Product.countDocuments(),
+   }
 };
 
 exports.checkout = async (data = {}) => {

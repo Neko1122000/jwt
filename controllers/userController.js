@@ -3,7 +3,7 @@ const userActions = require('../actions/UserAction');
 exports.getUsers = async (req, res) => {
     try {
         const result = await userActions.getUsers(req.query);
-        res.status(200).send(result || "No Users found");
+        res.status(200).send(result);
     } catch (e) {
         console.log(e);
         res.status(404).send('Listing Error');
@@ -15,7 +15,8 @@ exports.register = async (req, res) => {
         const user = await userActions.register(req.body);
         res.status(200).send(user);
     } catch (e) {
-        console.log(e);
+        const message = e.message;
+        res.status(500).send(message);
     }
 };
 
@@ -40,6 +41,10 @@ exports.getSingleUser = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
+        if (req.body.hash_password || req.body.role || req.body.create_at || req.body.update_at) {
+            return res.status(302).send("Change not allow");
+        }
+        req.body.update_at = await Date.now();
         const result = await userActions.update(req.userId, req.body);
         res.status(200).send(result || "No User found");
     } catch (err) {
@@ -62,7 +67,7 @@ exports.login = async (req, res) => {
 exports.changePassword = async (req, res) => {
     try {
         await userActions.changePassword(req.userId, req.body);
-        res.status(200).send("user updated");
+        res.status(200).send("password changed");
     } catch (err) {
         //console.log(err);
         const message = err.message;
@@ -83,7 +88,7 @@ exports.getSingleOrder = async (req, res) => {
 exports.getOrders = async (req, res) => {
     try {
         const list = await userActions.getOrders(req.userId, req.query);
-        res.status(200).send(list || "No order");
+        res.status(200).send(list);
     } catch (e) {
         const message = e.message;
         return res.status(500).send(message);

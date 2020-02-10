@@ -47,7 +47,7 @@ exports.delete = async (req, res) => {
 exports.getProducts = async (req, res) => {
     try {
         const result = await productActions.getProducts(res.query);
-        res.status(200).send(result || "Product not found");
+        res.status(200).send(result);
     } catch(e) {
         const message = e.message;
         res.status(500).send(message);
@@ -70,3 +70,5 @@ exports.checkout = async (req, res) => {
     }
 
 };
+
+//TODO: 1, 2, 3, 4, 5, 6, - done 3, 2, 5, 6

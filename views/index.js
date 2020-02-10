@@ -11,8 +11,7 @@ const app = express();
 
 const port = 8080;
 
-//require('../models/seed');
-
+//require('../models/seed.test');
 app.use(bodyparser.urlencoded({extended: false}));
 app.use(bodyparser.json());
 
