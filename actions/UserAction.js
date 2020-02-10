@@ -48,17 +48,19 @@ exports.register = async (params = {}) => {
     const em = await validateString.validateEmail(email);
     if (!em) throw new Error ("Enter your Email");
     if (!name) throw new Error ("Enter your name");
+    const user = await User.findOne({email: email});
+    if (user) throw new Error("Email has already existed");
     const pass = await validateString.passwordValidate(password);
     if (!pass) throw new Error ("Password must have at least 8 characters, at most 20 character, include digits, lowercase and upperecase");
 
     const hashPassword = bcrypt.hashSync(password, 10);
-
     let newUser = await User.create({
         name,
         email,
         hash_password: hashPassword,
     });
     const token = await jwt.sign({id: newUser._id}, config.secret, {expiresIn: 84600});
+    
     return ({
         token: token,
         user: await newUser.getUserInfo(),
