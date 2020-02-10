@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="78c41915-5e02-457c-ad70-8dda9d435d55" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/actions/UserAction.js" beforeDir="false" afterPath="$PROJECT_DIR$/actions/UserAction.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/userController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/router.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/router.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/authentication.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/authentication.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +98,7 @@
       <workItem from="1580970373346" duration="10966000" />
       <workItem from="1580982926133" duration="2513000" />
       <workItem from="1581039736643" duration="18731000" />
-      <workItem from="1581298765156" duration="8249000" />
+      <workItem from="1581298765156" duration="10062000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <created>1580810277857</created>
