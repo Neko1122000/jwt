@@ -60,7 +60,7 @@ exports.register = async (params = {}) => {
         hash_password: hashPassword,
     });
     const token = await jwt.sign({id: newUser._id}, config.secret, {expiresIn: 84600});
-    
+
     return ({
         token: token,
         user: await newUser.getUserInfo(),
@@ -119,3 +119,7 @@ exports.getOrders = async (id, query) => {
 exports.getSingleOrder = async (id) => {
     return (Order.findOne({_id: id}));
 };
+
+exports.toAdmin = async (id) => {
+    return (User.updateOne({_id: id}, {$set: {role: "admin"}}, {new: true}));
+}

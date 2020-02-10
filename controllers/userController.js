@@ -95,4 +95,14 @@ exports.getOrders = async (req, res) => {
     }
 };
 
+exports.toAdmin = async (req, res) => {
+    try{
+        const result = await userActions.toAdmin(req.params.id);
+        res.status(200).send(result);
+    }catch (e) {
+        const message = e.message;
+        res.status(500).send(message);
+    }
+};
+
 

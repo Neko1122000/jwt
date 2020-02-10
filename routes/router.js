@@ -13,6 +13,7 @@ router.put('/api/v1/user/change-password',auth.authenticate, user.changePassword
 
 router.get('/api/v1/users', auth.authenticate, auth.isAdmin, user.getUsers);                          // user.getUsers
 router.delete('/api/v1/users/:id', auth.authenticate, auth.isAdmin, user.delete);
+router.put('/api/v1/users/:id', auth.authenticate, auth.isAdmin, user.toAdmin);
 
 router.put('/api/v1/products/:id', auth.authenticate, auth.isAdmin, product.update);                  // product.update
 router.delete('/api/v1/products/:id', auth.authenticate, auth.isAdmin, product.delete); // product.delete
