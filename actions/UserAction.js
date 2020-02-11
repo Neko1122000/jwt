@@ -32,11 +32,11 @@ exports.update = async (id, data) => {
     return (user.getUserInfo());
 };
 
-exports.delete = async (id) => {
+exports.delete = (id) => {
     return (User.deleteOne({_id: id}));
 };
 
-exports.getSingleUser = async (id) => {
+exports.getSingleUser = (id) => {
     return (User.findById(id)
                 .select({hash_password: 0, _id: 0})
                 .lean());
@@ -116,10 +116,10 @@ exports.getOrders = async (id, query) => {
     });
 };
 
-exports.getSingleOrder = async (id) => {
+exports.getSingleOrder = (id) => {
     return (Order.findOne({_id: id}));
 };
 
-exports.toAdmin = async (id) => {
+exports.toAdmin = (id) => {
     return (User.updateOne({_id: id}, {$set: {role: "admin"}}, {new: true}));
-}
+};

@@ -3,7 +3,7 @@ const userActions = require('../actions/UserAction');
 exports.getUsers = async (req, res) => {
     try {
         const result = await userActions.getUsers(req.query);
-        res.status(200).send(result);
+        res.status(200).json(result);
     } catch (e) {
         console.log(e);
         res.status(404).send('Listing Error');
@@ -13,7 +13,7 @@ exports.getUsers = async (req, res) => {
 exports.register = async (req, res) => {
     try {
         const user = await userActions.register(req.body);
-        res.status(200).send(user);
+        res.status(200).json(user);
     } catch (e) {
         const message = e.message;
         res.status(500).send(message);
@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const result = await userActions.delete(req.userId);
-        res.status(200).send(result);
+        res.status(200).json(result);
     } catch(err){
         console.log(err);
     }
@@ -32,7 +32,7 @@ exports.delete = async (req, res) => {
 exports.getSingleUser = async (req, res) => {
     try {
         const result = await userActions.getSingleUser(req.userId);
-        res.status(200).send(result || "No User found");
+        res.status(200).json(result || "No User found");
     } catch (e) {
         const message = e.message;
         res.status(404).send(message);
@@ -46,7 +46,7 @@ exports.update = async (req, res) => {
         }
         req.body.update_at = await Date.now();
         const result = await userActions.update(req.userId, req.body);
-        res.status(200).send(result || "No User found");
+        res.status(200).json(result || "No User found");
     } catch (err) {
         const message = err.message;
         res.status(500).send(message);

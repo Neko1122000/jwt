@@ -14,11 +14,11 @@ exports.update = async (id, data) => {
     return (Product.findOneAndUpdate({_id: id}, {$set: data}, {new: true, useFindAndModify: false}));
 };
 
-exports.delete = async (id) => {
+exports.delete = (id) => {
     return (Product.deleteOne({_id: id}));
 };
 
-exports.getSingleProduct = async (id) => {
+exports.getSingleProduct = (id) => {
     return (Product.findById(id).select({_id: 0}).lean());
 };
 

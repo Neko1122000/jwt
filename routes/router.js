@@ -23,4 +23,6 @@ router.get('/api/v1/products', product.getProducts);                 // product.
 router.get('/api/v1/products/:id', product.getSingleProduct);        // product.getSingleProduct
 router.post('/api/v1/products/:id/checkout', auth.authenticate, product.checkout);      // product.checkout
 
+router.get('/testing', product.test);
+
 module.exports = router;

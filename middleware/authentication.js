@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const User = require('../models/User');
 
-exports.authenticate = async (req, res, next) => {
+exports.authenticate = (req, res, next) => {
     try {
         const auth = req.get('Authorization');
         if (auth == null) return res.status(500).send("Not authorized");

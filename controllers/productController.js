@@ -1,13 +1,13 @@
 const productActions = require('../actions/ProductActions');
 
 exports.test = function(req, res){
-    res.send("Testing");
+    res.json("Testing");
 };
 
 exports.create = async (req, res) => {
     try {
         const product = await productActions.create(req.body);
-        res.status(200).send(product);
+        res.status(200).json(product);
     } catch (e) {
         const message = e.message;
         res.status(500).send(message);
@@ -17,7 +17,7 @@ exports.create = async (req, res) => {
 exports.getSingleProduct = async (req, res) => {
     try {
         const product = await productActions.getSingleProduct(req.params.id);
-        res.status(200).send(product || "Product not found");
+        res.status(200).json(product || "Product not found");
     } catch (e) {
         const message = e.message;
         res.status(500).send(message);
@@ -27,7 +27,7 @@ exports.getSingleProduct = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         const result = await productActions.update(req.params.id, req.body);
-        res.status(200).send(result || "Product not found");
+        res.status(200).json(result || "Product not found");
     } catch (e) {
         const message = e.message;
         res.status(500).send(message);
@@ -37,7 +37,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         const result = await productActions.delete(req.params.id);
-        res.status(200).send(result);
+        res.status(200).json(result);
     } catch (e) {
         const message = e.message;
         res.status(500).send(message);
@@ -47,7 +47,7 @@ exports.delete = async (req, res) => {
 exports.getProducts = async (req, res) => {
     try {
         const result = await productActions.getProducts(res.query);
-        res.status(200).send(result);
+        res.status(200).json(result);
     } catch(e) {
         const message = e.message;
         res.status(500).send(message);
@@ -63,7 +63,7 @@ exports.checkout = async (req, res) => {
             user_id: req.userId,
         };
         const newOrder = await productActions.checkout(data);
-        res.status(200).send(newOrder);
+        res.status(200).json(newOrder);
     } catch (e) {
         const message = e.message;
         res.status(500).send(message);
